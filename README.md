@@ -4,18 +4,24 @@ Backend for Meta interest search tool, vercel app
 ---------------------
 
 1. **Deploy to Vercel**
-text
+   
 vercel.com → Import fb-interest-backend repo → Deploy
-3. Add Facebook Token to Vercel (SECRET!)
-text
-After deployment → Project Settings → Environment Variables
-Add this variable:
 
-text
+2. **Add Facebook Token to Vercel** (SECRET!)
+
+After deployment → Project Settings → Environment Variables
+
+3. **Add this variable:**
+
+
 Name: FACEBOOK_TOKEN
+
 Value: [paste your actual Facebook token here]
+
 Scopes: Production ✅
+
 Click "Save" → "Redeploy"
+
 
 Why This Works Perfectly
 text
