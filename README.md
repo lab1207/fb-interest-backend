@@ -52,7 +52,7 @@ Your Vercel URL: https://fb-interest-backend-XXXX.vercel.app
 
 
 
-**YES!** ✅
+**YES!** ✅ Your Token Must Has This Permissions!
 
 **✅ Facebook Permissions You NEED for Your Interest Search App**
 
