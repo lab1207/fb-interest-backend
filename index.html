@@ -2,7 +2,7 @@
 <script>
 (function(){
   const mountId = "interest-app";
-  const API_URL = "https://fb-interest-backend.onrender.com/api/interests";
+  const API_URL = "/api/interests";  // ✅ FIXED: Relative URL (no Render.com)
   const css = `
   body{background:#18191f}
   .ia-wrap{display:grid;grid-template-columns:1fr 340px;gap:30px}@media(max-width:1020px){.ia-wrap{grid-template-columns:1fr}}
@@ -232,3 +232,4 @@
   if(el) app(el);
 })();
 </script>
+
