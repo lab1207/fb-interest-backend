@@ -6,8 +6,8 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const GRAPH = "https://graph.facebook.com/v20.0"; // Updated version
-const ACCESS_TOKEN = process.env.META_TOKEN; // ✅ Correct env var
+const GRAPH = "https://graph.facebook.com/v20.0";
+const ACCESS_TOKEN = process.env.META_TOKEN;
 const LOCALE_DEFAULT = "en_US";
 const HARD_LIMIT = 300;
 
@@ -22,16 +22,8 @@ function norm(item) {
     id: String(item.id),
     name: item.name,
     path: item.topic || item.path || [],
-    audience_size_min:
-      item.audience_size_lower_bound ||
-      item.audience_size_min ||
-      item.audience_size ||
-      0,
-    audience_size_max:
-      item.audience_size_upper_bound ||
-      item.audience_size_max ||
-      item.audience_size ||
-      0
+    audience_size_min: item.audience_size_lower_bound || item.audience_size_min || item.audience_size || 0,
+    audience_size_max: item.audience_size_upper_bound || item.audience_size_max || item.audience_size || 0
   };
 }
 
@@ -43,6 +35,9 @@ app.get("/api/interests", async (req, res) => {
     
     if (!q) return res.json({ data: [] });
 
+    console.log('Searching for:', q); // DEBUG
+    console.log('Token exists:', !!ACCESS_TOKEN); // DEBUG
+
     const searchUrl = new URL(GRAPH + "/search");
     searchUrl.searchParams.set("type", "adinterest");
     searchUrl.searchParams.set("q", q);
@@ -51,55 +46,22 @@ app.get("/api/interests", async (req, res) => {
     searchUrl.searchParams.set("access_token", ACCESS_TOKEN);
 
     const base = await fbGet(searchUrl.toString());
+    console.log('Base response:', base); // DEBUG
 
-    const suggUrl = new URL(GRAPH + "/search");
-    suggUrl.searchParams.set("type", "adinterestsuggestion");
-    suggUrl.searchParams.set("interest_list", JSON.stringify([q]));
-    suggUrl.searchParams.set("limit", String(limit));
-    suggUrl.searchParams.set("locale", locale);
-    suggUrl.searchParams.set("access_token", ACCESS_TOKEN);
-
-    const sugg = await fbGet(suggUrl.toString());
-
-    // Merge/dedupe
-    const outMap = new Map();
-    const addAll = (arr, key = "data") => {
-      (arr?.[key] || []).forEach(item => {
-        if (!item || !item.id) return;
-        if (!outMap.has(item.id)) outMap.set(item.id, norm(item));
-      });
-    };
-    addAll(base);
-    addAll(sugg);
-
-    // Optionally: add suggestions from top results
-    const seeds = (base?.data || []).slice(0, 10);
-    for (const s of seeds) {
-      try {
-        const su = new URL(GRAPH + "/search");
-        su.searchParams.set("type", "adinterestsuggestion");
-        su.searchParams.set("interest_list", JSON.stringify([s.name]));
-        su.searchParams.set("limit", "50");
-        su.searchParams.set("locale", locale);
-        su.searchParams.set("access_token", ACCESS_TOKEN);
-        const more = await fbGet(su.toString());
-        addAll(more);
-        if (outMap.size >= HARD_LIMIT) break;
-      } catch (e) {}
-    }
-    const data = Array.from(outMap.values()).slice(0, HARD_LIMIT);
+    // Simplified - just return basic search (suggestions often empty)
+    const data = (base.data || []).map(norm).slice(0, HARD_LIMIT);
+    
     res.json({ data });
   } catch (e) {
-    console.error('Facebook API Error:', e);
-    res.status(500).json({ error: "Meta fetch failed", details: e.message, data: [] });
+    console.error('FULL ERROR:', e.message);
+    res.status(500).json({ 
+      error: "Meta fetch failed", 
+      details: e.message, 
+      data: [],
+      debug: { hasToken: !!ACCESS_TOKEN }
+    });
   }
 });
 
-// ❌ REMOVE THIS FOR VERCEL (CRITICAL!)
-/*
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log("API on :" + PORT));
-*/
-
-// ✅ ADD THIS FOR VERCEL SERVERLESS
-export default app;
+// ❌ CRITICAL: VERCEL SERVERLESS FORMAT
+module.exports = app;  // ← THIS IS THE KEY!
