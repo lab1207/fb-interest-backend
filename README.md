@@ -20,19 +20,27 @@ Value: [paste your actual Facebook token here]
 
 Scopes: Production ✅
 
-Click "Save" → "Redeploy"
+<h3>Click "Save" → "Redeploy"</h3>
 
 
-Why This Works Perfectly
-text
+**Why This Works Perfectly**
+
 Frontend (index.html) → Calls /api/interests
+
 Backend (server.js) → Gets FACEBOOK_TOKEN from Vercel
+
 Backend → Facebook API → Returns data to frontend
-text
-Your Vercel URL: https://fb-interest-backend-XXXX.vercel.app
+
+
+**Your Vercel URL: https://fb-interest-backend-XXXX.vercel.app**
+
 ✅ Token stays hidden in Vercel dashboard
+
 ✅ GitHub has NO token (secure)
+
 ✅ Facebook data loads instantly
+
+---------------------
 Test It
 Visit your Vercel URL
 
