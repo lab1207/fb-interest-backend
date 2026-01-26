@@ -4,9 +4,10 @@ import cors from "cors";
 
 const app = express();
 app.use(cors());
+app.use(express.json());
 
-const GRAPH = "https://graph.facebook.com/v19.0"; // Always stay current version
-const ACCESS_TOKEN = process.env.META_TOKEN;
+const GRAPH = "https://graph.facebook.com/v20.0"; // Updated version
+const ACCESS_TOKEN = process.env.META_TOKEN; // ✅ Correct env var
 const LOCALE_DEFAULT = "en_US";
 const HARD_LIMIT = 300;
 
@@ -39,6 +40,7 @@ app.get("/api/interests", async (req, res) => {
     const q = (req.query.q || "").toString().trim();
     const limit = Math.min(Number(req.query.limit || 250), HARD_LIMIT);
     const locale = (req.query.locale || LOCALE_DEFAULT).toString();
+    
     if (!q) return res.json({ data: [] });
 
     const searchUrl = new URL(GRAPH + "/search");
@@ -88,9 +90,16 @@ app.get("/api/interests", async (req, res) => {
     const data = Array.from(outMap.values()).slice(0, HARD_LIMIT);
     res.json({ data });
   } catch (e) {
-    res.status(500).json({ error: "Meta fetch failed", details: e.message });
+    console.error('Facebook API Error:', e);
+    res.status(500).json({ error: "Meta fetch failed", details: e.message, data: [] });
   }
 });
 
+// ❌ REMOVE THIS FOR VERCEL (CRITICAL!)
+/*
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log("API on :" + PORT));
+*/
+
+// ✅ ADD THIS FOR VERCEL SERVERLESS
+export default app;
