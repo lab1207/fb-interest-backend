@@ -41,13 +41,14 @@ Backend → Facebook API → Returns data to frontend
 ✅ Facebook data loads instantly
 
 ---------------------
-Test It
-Visit your Vercel URL
+**Test It**
+1. Visit your Vercel URL
 
-Search for interests
+2. Search for interests
 
-Facebook data should load (token works!)
 
-Your token never touches GitHub. 100% secure. 🚀
+**3. Facebook data should load (token works!)**
 
-Done in 5 minutes!
+**Your token never touches GitHub. 100% secure. 🚀**
+
+**Done in 5 minutes!**
