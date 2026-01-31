@@ -7,14 +7,14 @@ Backend for Meta interest search tool, vercel app (Check HTML.index file for Ser
 
 # **COMPLETE VERCEL DEPLOYMENT - 5 MINUTE STEP-BY-STEP** 🚀
 
-## **STEP 3: Deploy to Vercel (2 min)**
+## **STEP 1: Deploy to Vercel (2 min)**
 ```
 1. Go to vercel.com → Sign in with GitHub
 2. "New Project" → Import "fb-interest-backend" repo
 3. Framework: "Other" → Deploy
 ```
 
-## **STEP 4: Add Environment Variable (30 sec)**
+## **STEP 2: Add Environment Variable (30 sec)**
 ```
 Vercel Dashboard → Your Project → Settings → Environment Variables
 Add:
@@ -24,7 +24,7 @@ Environment: Production ✅
 → Save → Redeploy
 ```
 
-## **STEP 5: Test (10 sec)**
+## **STEP 3: Test (10 sec)**
 ```
 Your new URL: https://fb-interest-backend-XXXX.vercel.app/api/interests?q=cricket
 ✅ Should return Facebook interests JSON!
@@ -38,12 +38,6 @@ server.js          ✅ Backend (Vercel format)
 vercel.json        ✅ Routing config
 META_TOKEN         ✅ Environment variable
 ```
-
-**Your token works → server.js fixed → Vercel deployment = 100% WORKING!**
-
-**After Step 5, your app will show Facebook interests perfectly!** 🎉
-
-**Tell me your Vercel URL when done!** 🚀
 
 ---------------------
 
