@@ -82,7 +82,7 @@
     async function fetchAll(q) {
       loading = true; errorMsg = ""; render();
       try{
-        const p = new URLSearchParams({ q: q.trim(), limit: "150", locale: "en_US" });
+        const p = new URLSearchParams({ q: q.trim(), limit: "1000", locale: "en_US" });
         const res = await fetch(API_URL + "?" + p.toString(), { method: "GET" });
         if (!res.ok) throw new Error("Fetch failed");
         const json = await res.json();
@@ -232,4 +232,5 @@
   if(el) app(el);
 })();
 </script>
+
 
