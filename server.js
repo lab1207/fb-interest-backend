@@ -16,7 +16,8 @@ app.get("/api/interests", async (req, res) => {
 
     console.log(`Searching interests for: ${q}`);
     
-    const url = `${GRAPH}/search?type=adinterest&q=${encodeURIComponent(q)}&limit=25&access_token=${ACCESS_TOKEN}`;
+    const limit = req.query.limit || '1000';  // ← FIXED: Use frontend limit
+    const url = `${GRAPH}/search?type=adinterest&q=${encodeURIComponent(q)}&limit=${limit}&access_token=${ACCESS_TOKEN}`;
     
     const response = await fetch(url);
     const data = await response.json();
@@ -38,5 +39,4 @@ app.get("/api/interests", async (req, res) => {
   }
 });
 
-// VERCEL SERVERLESS - CRITICAL!
 export default app;
